@@ -69,9 +69,18 @@ class LoginScreen:
 
 def request_login(parent):
     """
-    Solicita login ao usuário.
-    Retorna True se as credenciais foram salvas com sucesso.
+    Verifica se existem credenciais salvas ou solicita login ao usuário.
+    Retorna True se as credenciais estiverem disponíveis ou forem salvas com sucesso.
     """
+    # Tenta carregar credenciais salvas primeiro
+    credentials_manager = CredentialsManager()
+    saved_credentials = credentials_manager.get_credentials()
+    
+    if saved_credentials:
+        # Se encontrou credenciais salvas, usa elas
+        return True
+    
+    # Se não encontrou credenciais, solicita login
     login_screen = LoginScreen(parent)
     parent.wait_window(login_screen.window)
     return login_screen.login_success

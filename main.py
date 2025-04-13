@@ -1,13 +1,14 @@
 from frontend.gui.main_window import MainWindow
 from backend.adapters.scraping_adapter import BeautifulSoupAdapter
 from backend.adapters.json_repository import JsonRepository
-
+from backend.config.credentials import CredentialsManager
 def main():
     print("\n=== Iniciando Web Scraping Tool ===")
     print("Inicializando componentes...")
 
     # Inicializa os adaptadores
-    scraping_service = BeautifulSoupAdapter()  # Proxies serão buscados automaticamente
+    credentials_manager = CredentialsManager()
+    scraping_service = BeautifulSoupAdapter()  # Credenciais serão carregadas quando necessário
     repository = JsonRepository()
     print("Componentes inicializados com sucesso")
 

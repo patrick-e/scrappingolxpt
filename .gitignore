@@ -1,0 +1,66 @@
+# Ambiente virtual
+/.venv
+/venv
+env/
+
+# Arquivos de configuração e credenciais
+.env
+.env.local
+backend/config/credentials.enc
+backend/config/secret.key
+
+# Cache Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Arquivos de distribuição/build
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Arquivos de dados gerados
+data.json
+*.xlsx
+*.csv
+*.xls
+
+# Logs e relatórios
+logs/
+*.log
+.coverage
+htmlcov/
+.coverage.*
+coverage.xml
+*.cover
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+.directory
+*.swp
+*.swo
+
+# Configurações de IDE
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.venv
+.project
+.pydevproject
+.settings
