@@ -25,14 +25,26 @@ class MainWindow:
         self.main_frame = ttk.Frame(self.root, padding="10")
         self.main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         
-        # Campo de URL
-        self.url_label = ttk.Label(self.main_frame, text="URL:")
-        self.url_label.grid(row=0, column=0, padx=5, pady=5)
+        # Frame para centralizar os botões
+        button_frame = ttk.Frame(self.main_frame)
+        button_frame.grid(row=0, column=0, columnspan=2, pady=20)
         
-        self.url_entry = ttk.Entry(self.main_frame, width=50)
-        self.url_entry.grid(row=0, column=1, padx=5, pady=5)
-        # Adiciona bind para tecla Enter
-        self.url_entry.bind('<Return>', lambda e: self.start_scraping())
+        # Botões de pesquisa centralizados
+        self.recent_button = ttk.Button(
+            button_frame,
+            text="Mais Recentes",
+            width=20,
+            command=lambda: self.start_scraping("https://www.olx.pt/ads/?search%5Border%5D=created_at:desc")
+        )
+        self.recent_button.grid(row=0, column=0, padx=10, pady=5)
+        
+        self.relevant_button = ttk.Button(
+            button_frame,
+            text="Principais",
+            width=20,
+            command=lambda: self.start_scraping("https://www.olx.pt/ads/?search%5Border%5D=relevance:desc")
+        )
+        self.relevant_button.grid(row=0, column=1, padx=10, pady=5)
         
         # Frame para progresso
         self.progress_frame = ttk.Frame(self.main_frame)
@@ -53,28 +65,15 @@ class MainWindow:
             length=300
         )
         self.progress_bar.grid(row=1, column=0)
-        # Botão de iniciar scraping
-        self.start_button = ttk.Button(
-            self.main_frame,
-            text="Iniciar Scraping",
-            command=lambda: self.start_scraping()  # Usando lambda para manter consistência com o bind do Enter
-        )
-        self.start_button.grid(row=2, column=0, columnspan=2, pady=10)
-        
-        
         # Esconde componentes de progresso inicialmente
         self.progress_label.grid_remove()
         self.progress_bar.grid_remove()
-    def start_scraping(self, event=None):  # Adicionado parâmetro event para suportar bind do Enter
+    def start_scraping(self, url):
         # Solicita login antes de iniciar o scraping
         if not request_login(self.root):
             messagebox.showerror("Erro", "É necessário fazer login para continuar")
             return
 
-        url = self.url_entry.get().strip()  # Remove espaços em branco
-        if not url:
-            messagebox.showerror("Erro", "Por favor, insira uma URL válida")
-            return
             
         print(f"\nIniciando scraping para URL: {url}")
         self.show_processing_state()
@@ -105,8 +104,8 @@ class MainWindow:
         
     def show_processing_state(self):
         self.is_processing = True
-        self.url_entry.configure(state='disabled')
-        self.start_button.configure(state='disabled')
+        self.recent_button.configure(state='disabled')
+        self.relevant_button.configure(state='disabled')
         self.progress_label.configure(text="Iniciando extração...\nPor favor, aguarde.")
         self.progress_label.grid()
         self.progress_bar.grid()
@@ -114,8 +113,8 @@ class MainWindow:
         
     def hide_processing_state(self):
         self.is_processing = False
-        self.url_entry.configure(state='normal')
-        self.start_button.configure(state='normal')
+        self.recent_button.configure(state='normal')
+        self.relevant_button.configure(state='normal')
         
         self.progress_label.grid_remove()
         self.progress_bar.grid_remove()
@@ -126,5 +125,5 @@ class MainWindow:
         self.root.update()
         
     def run(self):
-        print("\nInterface iniciada. Aguardando entrada de URL...")
+        print("\nInterface iniciada. Selecione 'Mais Recentes' ou 'Principais' para iniciar o scraping...")
         self.root.mainloop()
